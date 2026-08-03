@@ -1,49 +1,192 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
+// src/pages/index.astro
+import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import Footer from '../components/Footer.astro';
+
+import { getCollection } from 'astro:content';
+
+// 1. Obtenemos todas las reseñas guardadas en la colección
+const todasLasResenas = await getCollection('resenas');
+
+// 2. Ordenamos por fecha de publicación (la más reciente primero)
+todasLasResenas.sort((a, b) => {
+    const fechaA = a.data.fechaPublicacion ? new Date(a.data.fechaPublicacion).valueOf() : 0;
+    const fechaB = b.data.fechaPublicacion ? new Date(b.data.fechaPublicacion).valueOf() : 0;
+    return fechaB - fechaA;
+});
+
+// 3. Tomamos únicamente las primeras 3 publicaciones
+const ultimasResenas = todasLasResenas.slice(0, 3);
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<Layout title="Lucioti | Evaluaciones tecnológicas y soluciones digitales">
+    <Header />
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-text">
+                <span class="tagline">Tecnología Inteligente</span>
+                <h1>Soluciones Digitales: Desarrollo Web y Soporte Técnico</h1>
+                <p>El entorno digital que tu proyecto necesita para crecer. Descubre el equipo ideal validado por expertos y la infraestructura web para escalar tu negocio.</p>
+                <div class="hero-buttons">
+                    <a href="#servicios" class="btn btn-primary">Ver Servicios Web</a>
+                    <!-- CORRECCIÓN 1: Enlace directo a la reseña de laptops -->
+                    <a href="/resenas/top-5-laptops" class="btn btn-outline">Ver Laptops Regreso a Clases</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="/hero.jpg" alt="Espacio de trabajo tecnológico moderno" />
+            </div>
+        </div>
+    </section>
+
+    <!-- SOLUCIONES DIGITALES -->
+    <main class="container" id="servicios" style="margin-top: 4rem;">
+        <div class="section-header">
+            <h2>Soluciones Digitales a Medida</h2>
+            <p class="subtitle">Desarrollamos las herramientas digitales que automatizan tus procesos y modernizan tu negocio.</p>
+        </div>
+        
+        <div class="grid-container">
+            <article class="card">
+                <div class="icon-wrapper">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path>
+                    </svg>
+                </div>
+                <h3>Diseño Web y Tiendas en Línea</h3>
+                <p>Diseñamos sitios web y tiendas en línea integrales, optimizadas para destacar en buscadores y listas para generar ventas.</p>
+                <a href="#" class="link-arrow">Ver detalles →</a>
+            </article>
+            
+            <article class="card">
+                <div class="icon-wrapper">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                </div>
+                <h3>Desarrollo de Aplicaciones Web</h3>
+                <p>Transformamos tus procesos manuales en sistemas web interactivos para que gestiones tu negocio de forma ágil y segura.</p>
+                <a href="#" class="link-arrow">Ver detalles →</a>
+            </article>
+            
+            <article class="card">
+                <div class="icon-wrapper">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 17.25v-3.5m-4 3.5v-3.5"></path>
+                    </svg>
+                </div>
+                <h3>Plataformas Educativas y E-learning</h3>
+                <p>Digitalizamos tu institución para optimizar toda tu operación escolar.</p>
+                <a href="#" class="link-arrow">Ver detalles →</a>
+            </article>
+        </div>
+    </main>
+
+    <!-- ARTÍCULOS DINÁMICOS -->
+    <section class="articulos bg-light" id="articulos">
+        <div class="container">
+            <div class="section-header">
+                <h2>Últimas Reseñas</h2>
+                <p class="subtitle">Análisis honestos para compras inteligentes.</p>
+            </div>
+            <div class="grid-container resenas-grid">
+                {ultimasResenas.map((resena) => (
+                    <article class="card blog-card">
+                        <!-- CORRECCIÓN 2: Enlace que redirige a la publicación individual -->
+                        <a href={`/resenas/${resena.id}`} class="card-link">
+                            <img src={resena.data.imagen} alt={resena.data.titulo} class="card-img">
+                            <div class="card-content">
+                                <span class="badge">{resena.data.categoria}</span>
+                                <h3>{resena.data.titulo}</h3>
+                                <p>{resena.data.descripcion}</p>
+                                <span class="link-arrow mt-auto">Leer reseña completa →</span>
+                            </div>
+                        </a>
+                    </article>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <Footer />
+</Layout>
+
+<style>
+    .hero { padding: calc(4rem + 70px) 0 4rem; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); }
+    .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .tagline { display: inline-block; color: var(--primary); font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+    .hero h1 { font-size: clamp(2.3rem, 4vw, 3rem); line-height: 1.1; margin-bottom: 1.5rem; font-weight: 800; letter-spacing: -1px; }
+    .hero p { font-size: 1.15rem; color: var(--text-muted); margin-bottom: 2.5rem; max-width: 90%; }
+    .hero-image img { width: 100%; border-radius: 20px; box-shadow: var(--shadow-lg); object-fit: cover; aspect-ratio: 4/3; }
+    .hero-buttons { display: flex; gap: 1rem; }
+
+    .card { background: var(--bg-surface); border-radius: var(--radius); padding: 2.5rem 2rem; box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); transition: all 0.3s ease; }
+    .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: #cbd5e1; }
+    
+    .icon-wrapper { width: 48px; height: 48px; background: #eff6ff; color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+    .icon-wrapper svg { width: 24px; height: 24px; }
+    
+    .card h3 { 
+        font-size: 1.3rem; 
+        font-weight: 700; 
+        margin-bottom: 0.8rem; 
+        text-align: center; 
+    }
+    
+    .card p { 
+        color: var(--text-muted); 
+        font-size: 0.95rem; 
+        margin-bottom: 1.5rem; 
+        line-height: 1.6; 
+        text-align: justify; 
+    }
+
+    .link-arrow { color: var(--primary); font-weight: 600; text-decoration: none; font-size: 0.95rem; display: flex; align-items: center; }
+    .link-arrow:hover { color: var(--primary-dark); }
+    
+    .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+
+    .resenas-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    .blog-card { padding: 0; overflow: hidden; }
+    
+    /* Clase contenedora del enlace principal de la tarjeta */
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .card-img { width: 100%; height: 200px; object-fit: cover; }
+    .card-content { padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; }
+    
+    .mt-auto {
+        margin-top: auto;
+    }
+
+    .badge { display: inline-block; font-size: 0.75rem; background: #f1f5f9; color: var(--text-main); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 600; margin-bottom: 1rem; border: 1px solid var(--border-color); align-self: flex-start; }
+
+    @media (max-width: 768px) {
+        .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
+        .hero h1 { font-size: clamp(2rem, 8vw, 2.5rem); }
+        .hero p { margin: 0 auto 2rem; font-size: 1.05rem; max-width: 100%; }
+        .hero-buttons { flex-direction: column; align-items: center; gap: 1rem; }
+        .hero-buttons .btn { width: 100%; max-width: 300px; }
+        .hero-image img { aspect-ratio: 16/9; }
+
+        .grid-container, .resenas-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

@@ -1,0 +1,84 @@
+---
+// src/layouts/Layout.astro
+
+// 1. Importamos el componente reutilizable de SEO
+import SEO from '../components/SEO.astro';
+
+// 2. Expandimos la interfaz para aceptar metadatos de SEO
+export interface Props {
+    title: string;
+    description?: string;
+    image?: string;
+    article?: boolean;
+}
+
+// 3. Extraemos las propiedades con valores por defecto seguros
+const { 
+    title, 
+    description = "Evaluaciones tecnológicas y soluciones de desarrollo web a medida.",
+    image,
+    article = false
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Integración de tipografía Inter desde Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+
+    <!-- Componente de SEO (Inyecta automáticamente <title>, <meta description>, Open Graph y Twitter Cards) -->
+    <SEO 
+        title={title} 
+        description={description} 
+        image={image} 
+        article={article} 
+    />
+</head>
+<body>
+    <!-- <slot /> es donde Astro inyectará el contenido de tus páginas -->
+    <slot />
+</body>
+</html>
+
+<!-- Usamos is:global para que estos estilos apliquen a todo el sitio web -->
+<style is:global>
+    :root {
+        --primary: #3b82f6;      /* Azul eléctrico vibrante */
+        --primary-dark: #2563eb;
+        --bg-body: #f8fafc;      /* Blanco grisáceo muy limpio */
+        --bg-surface: #ffffff;
+        --text-main: #0f172a;    /* Slate oscuro para textos */
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
+        --radius: 12px;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; color: var(--text-main); background: var(--bg-body); line-height: 1.6; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .text-center { text-align: center; }
+    .bg-light { background-color: var(--bg-body); padding: 5rem 0; }
+
+    /* BOTONES GLOBALES */
+    .btn { display: inline-flex; justify-content: center; align-items: center; padding: 0.8rem 1.8rem; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.2s; font-size: 0.95rem; }
+    .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39); }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+    .btn-outline { background: transparent; color: var(--text-main); border: 1px solid var(--border-color); }
+    .btn-outline:hover { border-color: var(--text-main); background: #f1f5f9; }
+
+    /* SECCIONES Y GRIDS GLOBALES */
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
+    .section-header h2 { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--text-muted); font-size: 1.1rem; }
+    .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; }
+</style>

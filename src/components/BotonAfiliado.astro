@@ -1,0 +1,143 @@
+---
+// src/components/BotonAfiliado.astro
+
+// 1. Definición de las propiedades que acepta el componente
+export interface Props {
+    url: string;                  // Enlace de afiliado
+    texto?: string;               // Texto del botón
+    tienda?: 'mercadolibre' | 'amazon' | 'general'; // Identificador de tienda
+    precio?: string;              // Ejemplo: "$12,499 MXN" (Opcional)
+    destacado?: boolean;          // Activa una animación sutil
+}
+
+// 2. Asignación de valores por defecto
+const { 
+    url, 
+    texto = "Ver precio en tienda", 
+    tienda = "mercadolibre", 
+    precio,
+    destacado = false 
+} = Astro.props;
+
+// 3. Selección del nombre de tienda para mostrar
+const nombresTienda = {
+    mercadolibre: "Mercado Libre",
+    amazon: "Amazon",
+    general: "Ver Oferta"
+};
+
+const nombreTiendaMostrar = nombresTienda[tienda] || nombresTienda.general;
+---
+
+<div class="afiliado-container">
+    <a 
+        href={url} 
+        target="_blank" 
+        rel="nofollow noopener noreferrer" 
+        class={`btn-afiliado btn-${tienda} ${destacado ? 'destacado' : ''}`}
+    >
+        <span class="btn-contenido">
+            <span class="btn-texto">{texto} en <strong>{nombreTiendaMostrar}</strong></span>
+            {precio && <span class="btn-precio">{precio}</span>}
+        </span>
+        <svg class="icono-flecha" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+        </svg>
+    </a>
+</div>
+
+<style>
+    .afiliado-container {
+        margin: 1.5rem 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn-afiliado {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1rem 1.8rem;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.25s ease;
+        box-shadow: var(--shadow-md);
+        width: 100%;
+        max-width: 450px;
+    }
+
+    /* Variantes por Tienda */
+    .btn-mercadolibre {
+        background-color: #ffe600;
+        color: #2d3277;
+    }
+
+    .btn-mercadolibre:hover {
+        background-color: #f7dc00;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .btn-amazon {
+        background-color: #ff9900;
+        color: #111111;
+    }
+
+    .btn-amazon:hover {
+        background-color: #e68a00;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .btn-general {
+        background-color: var(--primary);
+        color: #ffffff;
+    }
+
+    .btn-general:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+    }
+
+    /* Estilos de contenido */
+    .btn-contenido {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .btn-texto {
+        font-size: 0.95rem;
+    }
+
+    .btn-precio {
+        font-size: 0.85rem;
+        opacity: 0.9;
+        font-weight: 400;
+    }
+
+    .icono-flecha {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        transition: transform 0.2s ease;
+    }
+
+    .btn-afiliado:hover .icono-flecha {
+        transform: translateX(4px);
+    }
+
+    /* Animación de llamado a la acción opcional */
+    .destacado {
+        animation: pulso 2s infinite;
+    }
+
+    @keyframes pulso {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+    }
+</style>

@@ -1,0 +1,262 @@
+---
+// src/pages/resenas/[...slug].astro
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+// 1. Generamos las rutas estáticas para cada reseña en la colección
+export async function getStaticPaths() {
+  const todasLasResenas = await getCollection('resenas');
+  return todasLasResenas.map((resena) => ({
+    params: { slug: resena.id },
+    props: { resena },
+  }));
+}
+
+// 2. Recibimos la reseña actual a través de las propiedades
+const { resena } = Astro.props;
+const { data } = resena;
+
+// 3. Renderizamos el cuerpo del texto en Markdown a componentes HTML
+const { Content } = await render(resena);
+
+// Formateamos la fecha de publicación en español
+const fechaFormateada = new Date(data.fechaPublicacion).toLocaleDateString('es-ES', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<Layout title={`${data.titulo} | Lucioti`}>
+  <Header />
+
+  <main class="container articulo-container">
+    <!-- Encabezado del artículo -->
+    <header class="articulo-header">
+      <div class="migas-de-pan">
+        <a href="/resenas">Reseñas</a> / <span>{data.categoria}</span>
+      </div>
+      <span class="badge-cat">{data.categoria}</span>
+      <h1 class="articulo-titulo">{data.titulo}</h1>
+      <p class="articulo-descripcion">{data.descripcion}</p>
+      <time class="articulo-fecha">Publicado el {fechaFormateada}</time>
+    </header>
+
+    <!-- Imagen destacada -->
+    {data.imagen && (
+      <div class="imagen-destacada-wrapper">
+        <img src={data.imagen} alt={data.titulo} class="imagen-destacada" />
+      </div>
+    )}
+
+    <!-- Cuerpo principal del artículo (Markdown) -->
+    <article class="contenido-markdown">
+      <Content />
+    </article>
+
+    <!-- Caja de llamada a la acción para el enlace de Afiliado -->
+    {data.enlaceAfiliado && (
+      <section class="afiliado-box">
+        <h2>¿Te interesa este producto?</h2>
+        <p>
+          Obtén el mejor precio actualizado y opciones de envío rápido consultando la oferta directamente en Mercado Libre.
+        </p>
+        <a 
+          href={data.enlaceAfiliado} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="btn-afiliado"
+        >
+          Ver precio y disponibilidad en Mercado Libre →
+        </a>
+      </section>
+    )}
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .articulo-container {
+    max-width: 800px;
+    margin: calc(70px + 2rem) auto 5rem auto;
+    padding: 0 1.5rem;
+  }
+
+  /* Encabezado */
+  .articulo-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .migas-de-pan {
+    font-size: 0.85rem;
+    color: var(--text-muted, #64748b);
+    margin-bottom: 1rem;
+  }
+
+  .migas-de-pan a {
+    color: #2563eb;
+    text-decoration: none;
+  }
+
+  .badge-cat {
+    display: inline-block;
+    background: #e2e8f0;
+    color: #1e293b;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .articulo-titulo {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    color: #0f172a;
+  }
+
+  .articulo-descripcion {
+    font-size: 1.15rem;
+    color: var(--text-muted, #475569);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .articulo-fecha {
+    font-size: 0.85rem;
+    color: var(--text-muted, #64748b);
+  }
+
+  /* Imagen destacada */
+  .imagen-destacada-wrapper {
+    margin-bottom: 3rem;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .imagen-destacada {
+    width: 100%;
+    height: auto;
+    max-height: 450px;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Estilos del cuerpo en Markdown */
+  .contenido-markdown {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #334155;
+  }
+
+  .contenido-markdown :global(h2) {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: #0f172a;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 0.5rem;
+  }
+
+  .contenido-markdown :global(h3) {
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: #1e293b;
+  }
+
+  .contenido-markdown :global(p) {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+  }
+
+  .contenido-markdown :global(ul), .contenido-markdown :global(ol) {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .contenido-markdown :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .contenido-markdown :global(a) {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  /* Caja de Afiliado */
+  .afiliado-box {
+    background: #eff6ff;
+    border: 2px dashed #2563eb;
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    margin-top: 4rem;
+  }
+
+  .afiliado-box h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #1e3a8a;
+  }
+
+  .afiliado-box p {
+    color: #1e40af;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+
+  .btn-afiliado {
+    display: inline-block;
+    background: #2563eb;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 0.9rem 1.75rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  }
+
+  .btn-afiliado:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+  }
+
+  /* Adaptación a dispositivos móviles */
+  @media (max-width: 767px) {
+    .articulo-container {
+      margin-top: calc(60px + 1.5rem);
+      padding: 0 1rem;
+    }
+
+    .articulo-titulo {
+      font-size: 1.75rem;
+    }
+
+    .articulo-descripcion {
+      font-size: 1rem;
+    }
+
+    .afiliado-box {
+      padding: 1.5rem;
+    }
+
+    .btn-afiliado {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-size: 0.95rem;
+    }
+  }
+</style>

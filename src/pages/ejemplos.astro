@@ -1,0 +1,120 @@
+---
+// src/pages/ejemplos.astro
+import Layout from '../layouts/Layout.astro';
+import BotonAfiliado from '../components/BotonAfiliado.astro';
+---
+
+<Layout title="Catálogo de Componentes - Guía de Uso">
+  <main class="container page-padding">
+    <h1>Guía de Uso: Botón de Afiliado</h1>
+    <p class="subtitle">Copia y pega estos bloques de código directamente en tus páginas de Astro.</p>
+
+    <hr class="divider" />
+
+    <!-- EJEMPLO 1: Mercado Libre Estándar -->
+    <section class="example-card">
+      <h2>1. Enlace a Mercado Libre (Básico)</h2>
+      <p>Uso ideal para recomendaciones rápidas en listados o tarjetas de productos.</p>
+      
+      <div class="preview">
+        <BotonAfiliado 
+          url="https://articulo.mercadolibre.com.mx/ejemplo" 
+          tienda="mercadolibre" 
+        />
+      </div>
+
+      <pre><code>{`<BotonAfiliado 
+  url="https://articulo.mercadolibre.com.mx/ejemplo" 
+  tienda="mercadolibre" 
+/>`}</code></pre>
+    </section>
+
+    <!-- EJEMPLO 2: Con precio y destacado -->
+    <section class="example-card">
+      <h2>2. Enlace Destacado con Precio</h2>
+      <p>Incluye una animación de pulso sutil y muestra el precio exacto del producto.</p>
+      
+      <div class="preview">
+        <BotonAfiliado 
+          url="https://articulo.mercadolibre.com.mx/ejemplo" 
+          texto="Comprar oferta especial" 
+          tienda="mercadolibre" 
+          precio="$12,499 MXN" 
+          destacado={true} 
+        />
+      </div>
+
+      <pre><code>{`<BotonAfiliado 
+  url="https://articulo.mercadolibre.com.mx/ejemplo" 
+  texto="Comprar oferta especial" 
+  tienda="mercadolibre" 
+  precio="$12,499 MXN" 
+  destacado={true} 
+/>`}</code></pre>
+    </section>
+
+    <!-- EJEMPLO 3: Tienda General / Amazon -->
+    <section class="example-card">
+      <h2>3. Variante General u Otras Tiendas</h2>
+      <p>Para enlaces a tiendas secundarias o sitios web externos.</p>
+      
+      <div class="preview">
+        <BotonAfiliado 
+          url="https://tienda.com/ejemplo" 
+          texto="Ir a la tienda oficial" 
+          tienda="general" 
+        />
+      </div>
+
+      <pre><code>{`<BotonAfiliado 
+  url="https://tienda.com/ejemplo" 
+  texto="Ir a la tienda oficial" 
+  tienda="general" 
+/>`}</code></pre>
+    </section>
+
+  </main>
+</Layout>
+
+<style>
+  .page-padding {
+    padding-top: 3rem;
+    padding-bottom: 5rem;
+  }
+  .divider {
+    margin: 2rem 0;
+    border: none;
+    border-top: 1px solid var(--border-color);
+  }
+  .example-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .example-card h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  .example-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+  .preview {
+    background: var(--bg-body);
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+  }
+  pre {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.9rem;
+  }
+</style>

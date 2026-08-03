@@ -1,0 +1,238 @@
+---
+// src/components/TablaComparativa.astro
+
+// 1. Reutilizamos el botón de afiliado que creamos anteriormente
+import BotonAfiliado from './BotonAfiliado.astro';
+
+// 2. Estructura de cada producto individual dentro de la tabla
+export interface ProductoComparado {
+    titulo: string;
+    imagen: string;
+    puntuacion?: number;
+    precio: string;
+    caracteristicas: string[]; // Lista de especificaciones clave (ej. ["16 GB RAM", "512 GB SSD"])
+    urlAfiliado: string;
+    tiendaAfiliado?: 'mercadolibre' | 'amazon' | 'general';
+    destacado?: boolean;        // Resalta la columna completa si es la mejor opción
+    etiquetaDestacado?: string; // Ejemplo: "Mejor Calidad-Precio"
+}
+
+// 3. Propiedades del componente principal
+export interface Props {
+    tituloTabla?: string;
+    productos: ProductoComparado[];
+}
+
+const { 
+    tituloTabla = "Tabla Comparativa de Modelos", 
+    productos = [] 
+} = Astro.props;
+---
+
+<div class="comparativa-wrapper">
+    {tituloTabla && <h3 class="tabla-titulo">{tituloTabla}</h3>}
+
+    <div class="tabla-scroll-container">
+        <table class="tabla-comparativa">
+            <thead>
+                <tr>
+                    <th class="columna-header-vacia">Producto</th>
+                    {productos.map((prod) => (
+                        <th class={`columna-producto ${prod.destacado ? 'col-destacada' : ''}`}>
+                            {prod.destacado && (
+                                <span class="badge-tabla">{prod.etiquetaDestacado || 'Recomendado'}</span>
+                            )}
+                            <div class="thumb-container">
+                                <img src={prod.imagen} alt={prod.titulo} loading="lazy" />
+                            </div>
+                            <h4 class="nombre-prod">{prod.titulo}</h4>
+                            {prod.puntuacion && (
+                                <div class="puntuacion-badge">
+                                    <span>★</span> {prod.puntuacion} / 5
+                                </div>
+                            )}
+                        </th>
+                    ))}
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Fila de Precios -->
+                <tr class="fila-precio">
+                    <td class="etiqueta-fila">Precio Aprox.</td>
+                    {productos.map((prod) => (
+                        <td class={`celda-dato ${prod.destacado ? 'col-destacada' : ''}`}>
+                            <span class="precio-texto">{prod.precio}</span>
+                        </td>
+                    ))}
+                </tr>
+
+                <!-- Filas Dinámicas de Características -->
+                {productos[0]?.caracteristicas.map((_, index) => (
+                    <tr>
+                        <td class="etiqueta-fila">Especificación {index + 1}</td>
+                        {productos.map((prod) => (
+                            <td class={`celda-dato ${prod.destacado ? 'col-destacada' : ''}`}>
+                                {prod.caracteristicas[index] || '—'}
+                            </td>
+                        ))}
+                    </tr>
+                ))}
+
+                <!-- Fila del Botón de Acción -->
+                <tr class="fila-accion">
+                    <td class="etiqueta-fila">Enlace directo</td>
+                    {productos.map((prod) => (
+                        <td class={`celda-dato celda-boton ${prod.destacado ? 'col-destacada' : ''}`}>
+                            <BotonAfiliado 
+                                url={prod.urlAfiliado} 
+                                texto="Ver precio" 
+                                tienda={prod.tiendaAfiliado || 'mercadolibre'} 
+                                destacado={prod.destacado} 
+                            />
+                        </td>
+                    ))}
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .comparativa-wrapper {
+        margin: 2.5rem 0;
+        width: 100%;
+    }
+
+    .tabla-titulo {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+
+    /* Contenedor que permite scroll en móviles sin romper el maquetado */
+    .tabla-scroll-container {
+        overflow-x: auto;
+        border-radius: var(--radius);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-md);
+        background-color: var(--bg-surface);
+    }
+
+    .tabla-comparativa {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 600px; /* Garantiza legibilidad en pantallas pequeñas */
+        text-align: center;
+    }
+
+    th, td {
+        padding: 1.2rem 1rem;
+        border-bottom: 1px solid var(--border-color);
+        vertical-align: middle;
+    }
+
+    /* Estilos del Encabezado */
+    thead th {
+        background-color: var(--bg-body);
+        vertical-align: top;
+        position: relative;
+    }
+
+    .columna-header-vacia {
+        width: 180px;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        text-align: left;
+    }
+
+    .columna-producto {
+        width: 250px;
+    }
+
+    .thumb-container {
+        width: 100px;
+        height: 100px;
+        margin: 0.5rem auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        padding: 0.4rem;
+    }
+
+    .thumb-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .nombre-prod {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin: 0.5rem 0;
+        line-height: 1.3;
+    }
+
+    .puntuacion-badge {
+        display: inline-block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #854d0e;
+        background-color: #fef9c3;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+    }
+
+    .puntuacion-badge span { color: #eab308; }
+
+    /* Estilos del Cuerpo */
+    .etiqueta-fila {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--text-main);
+        text-align: left;
+        background-color: var(--bg-body);
+    }
+
+    .celda-dato {
+        font-size: 0.9rem;
+        color: var(--text-main);
+    }
+
+    .fila-precio .precio-texto {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .celda-boton {
+        padding: 1rem 0.5rem;
+    }
+
+    /* Resaltado de la Columna Destacada */
+    .col-destacada {
+        background-color: rgba(255, 230, 0, 0.05); /* Sombra sutil basada en la marca */
+        border-left: 2px solid var(--primary);
+        border-right: 2px solid var(--primary);
+    }
+
+    .badge-tabla {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--primary);
+        color: #2d3277;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.2rem 0.6rem;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        white-space: nowrap;
+    }
+</style>

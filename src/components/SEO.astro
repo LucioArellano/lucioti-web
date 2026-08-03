@@ -1,0 +1,42 @@
+---
+// src/components/SEO.astro
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  canonicalURL?: string | URL;
+  article?: boolean;
+}
+
+// 1. Desestructuramos las propiedades pasadas al componente con valores por defecto
+const {
+  title,
+  description,
+  image = '/hero.jpg', // Imagen de respaldo en la carpeta public/
+  canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://lucioti.com'),
+  article = false,
+} = Astro.props;
+
+// 2. Formateamos la URL absoluta de la imagen para redes sociales
+const imageURL = new URL(image, Astro.site || 'https://lucioti.com').href;
+---
+
+<!-- Metaetiquetas Básicas de HTML -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Metaetiquetas Open Graph / Facebook / WhatsApp -->
+<meta property="og:type" content={article ? 'article' : 'website'} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageURL} />
+
+<!-- Metaetiquetas Twitter Cards -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageURL} />

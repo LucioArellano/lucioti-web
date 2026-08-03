@@ -1,0 +1,256 @@
+---
+// src/components/ProductCard.astro
+
+// 1. Importamos nuestro componente de botón previamente creado
+import BotonAfiliado from './BotonAfiliado.astro';
+
+// 2. Definición de las propiedades aceptadas por la tarjeta
+export interface Props {
+    titulo: string;
+    imagen: string;
+    altImagen?: string;
+    puntuacion?: number;          // Ejemplo: 4.8
+    pros?: string[];              // Arreglo de ventajas
+    contras?: string[];           // Arreglo de desventajas
+    // Propiedades para el botón de afiliado
+    urlAfiliado: string;
+    precioAfiliado?: string;
+    tiendaAfiliado?: 'mercadolibre' | 'amazon' | 'general';
+    textoBoton?: string;
+    destacado?: boolean;
+}
+
+const {
+    titulo,
+    imagen,
+    altImagen = titulo,
+    puntuacion,
+    pros = [],
+    contras = [],
+    urlAfiliado,
+    precioAfiliado,
+    tiendaAfiliado = 'mercadolibre',
+    textoBoton = 'Ver oferta',
+    destacado = false
+} = Astro.props;
+---
+
+<div class={`product-card ${destacado ? 'card-destacada' : ''}`}>
+    {destacado && <span class="badge-recomendado">Mejor Elección</span>}
+
+    <div class="card-header">
+        <div class="imagen-container">
+            <img src={imagen} alt={altImagen} loading="lazy" />
+        </div>
+        
+        <div class="info-principal">
+            <h3 class="titulo-producto">{titulo}</h3>
+            
+            {puntuacion && (
+                <div class="puntuacion-box">
+                    <span class="estrella">★</span>
+                    <span class="puntuacion-texto">{puntuacion} / 5</span>
+                </div>
+            )}
+        </div>
+    </div>
+
+    <!-- Sección de Pros y Contras -->
+    {(pros.length > 0 || contras.length > 0) && (
+        <div class="pros-contras-grid">
+            {pros.length > 0 && (
+                <div class="columna-pros">
+                    <h4 class="titulo-lista texto-pro">Pros</h4>
+                    <ul>
+                        {pros.map((pro) => (
+                            <li>
+                                <span class="icono pro-icono">✓</span>
+                                {pro}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {contras.length > 0 && (
+                <div class="columna-contras">
+                    <h4 class="titulo-lista texto-contra">Contras</h4>
+                    <ul>
+                        {contras.map((contra) => (
+                            <li>
+                                <span class="icono contra-icono">✕</span>
+                                {contra}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </div>
+    )}
+
+    <!-- Llamada a la Acción (Botón Integrado) -->
+    <div class="card-footer">
+        <BotonAfiliado 
+            url={urlAfiliado} 
+            texto={textoBoton} 
+            tienda={tiendaAfiliado} 
+            precio={precioAfiliado} 
+            destacado={destacado} 
+        />
+    </div>
+</div>
+
+<style>
+    .product-card {
+        position: relative;
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        padding: 1.8rem;
+        margin: 2rem 0;
+        box-shadow: var(--shadow-md);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .product-card:hover {
+        box-shadow: var(--shadow-lg);
+    }
+
+    .card-destacada {
+        border-2px solid var(--primary);
+        border-color: var(--primary);
+    }
+
+    .badge-recomendado {
+        position: absolute;
+        top: -12px;
+        right: 20px;
+        background-color: var(--primary);
+        color: #ffffff;
+        font-size: 0.8rem;
+        font-weight: 700;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .card-header {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        gap: 1.5rem;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .imagen-container {
+        width: 100%;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 0.5rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .imagen-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .titulo-producto {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+    }
+
+    .puntuacion-box {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background-color: #fef9c3;
+        color: #854d0e;
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .estrella {
+        color: #eab308;
+    }
+
+    /* Pros y Contras Layout */
+    .pros-contras-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+        padding-top: 1.2rem;
+        border-top: 1px dashed var(--border-color);
+        margin-bottom: 1.5rem;
+    }
+
+    .titulo-lista {
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .texto-pro { color: #16a34a; }
+    .texto-contra { color: #dc2626; }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        font-size: 0.9rem;
+        color: var(--text-main);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        line-height: 1.4;
+    }
+
+    .icono {
+        font-weight: 800;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .pro-icono { color: #16a34a; }
+    .contra-icono { color: #dc2626; }
+
+    .card-footer {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Adaptación a dispositivos móviles */
+    @media (max-width: 640px) {
+        .card-header {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .imagen-container {
+            margin: 0 auto;
+        }
+
+        .pros-contras-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+    }
+</style>
