@@ -32,10 +32,11 @@ const ultimasResenas = todasLasResenas.slice(0, 3);
                 <p>El entorno digital que tu proyecto necesita para crecer. Descubre el equipo ideal validado por expertos y la infraestructura web para escalar tu negocio.</p>
                 <div class="hero-buttons">
                     <a href="#servicios" class="btn btn-primary">Ver Servicios Web</a>
-                    <!-- CORRECCIÓN 1: Enlace directo a la reseña de laptops -->
                     <a href="/resenas/top-5-laptops" class="btn btn-outline">Ver Laptops Regreso a Clases</a>
                 </div>
             </div>
+            
+            <!-- Contenedor de la imagen (se oculta automáticamente en móviles mediante CSS) -->
             <div class="hero-image">
                 <img src="/hero.jpg" alt="Espacio de trabajo tecnológico moderno" />
             </div>
@@ -97,7 +98,6 @@ const ultimasResenas = todasLasResenas.slice(0, 3);
             <div class="grid-container resenas-grid">
                 {ultimasResenas.map((resena) => (
                     <article class="card blog-card">
-                        <!-- CORRECCIÓN 2: Enlace que redirige a la publicación individual -->
                         <a href={`/resenas/${resena.id}`} class="card-link">
                             <img src={resena.data.imagen} alt={resena.data.titulo} class="card-img">
                             <div class="card-content">
@@ -159,7 +159,6 @@ const ultimasResenas = todasLasResenas.slice(0, 3);
 
     .blog-card { padding: 0; overflow: hidden; }
     
-    /* Clase contenedora del enlace principal de la tarjeta */
     .card-link {
         text-decoration: none;
         color: inherit;
@@ -177,13 +176,19 @@ const ultimasResenas = todasLasResenas.slice(0, 3);
 
     .badge { display: inline-block; font-size: 0.75rem; background: #f1f5f9; color: var(--text-main); padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 600; margin-bottom: 1rem; border: 1px solid var(--border-color); align-self: flex-start; }
 
+    /* REGLAS RESPONSIVAS PARA DISPOSITIVOS MÓVILES (<= 768px) */
     @media (max-width: 768px) {
-        .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; text-align: center; }
-        .hero h1 { font-size: clamp(2rem, 8vw, 2.5rem); }
-        .hero p { margin: 0 auto 2rem; font-size: 1.05rem; max-width: 100%; }
-        .hero-buttons { flex-direction: column; align-items: center; gap: 1rem; }
+        .hero { padding: calc(2.5rem + 60px) 0 2.5rem; }
+        .hero-grid { grid-template-columns: 1fr; gap: 1.5rem; text-align: center; }
+        .hero h1 { font-size: clamp(1.9rem, 7vw, 2.4rem); }
+        .hero p { margin: 0 auto 1.75rem; font-size: 1rem; max-width: 100%; }
+        .hero-buttons { flex-direction: column; align-items: center; gap: 0.75rem; }
         .hero-buttons .btn { width: 100%; max-width: 300px; }
-        .hero-image img { aspect-ratio: 16/9; }
+        
+        /* 1. OCULTAMOS LA IMAGEN DEL HERO EN PANTALLAS MÓVILES */
+        .hero-image {
+            display: none;
+        }
 
         .grid-container, .resenas-grid {
             grid-template-columns: 1fr;
