@@ -2,9 +2,9 @@ name: Despliegue Automatizado Lucioti
 
 on:
   push:
-    branches: [ main ] # Se activa automáticamente con cada push a la rama main
+    branches: [ main ] # Se ejecuta con cada push a la rama main
 
-# Permisos necesarios para publicar en GitHub Pages
+# Permisos requeridos para publicar en GitHub Pages
 permissions:
   contents: read
   pages: write
@@ -18,21 +18,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # 1. Obtiene el código fuente del repositorio
       - name: Descargar codigo fuente
         uses: actions/checkout@v4
 
+      # 2. Configura el entorno actualizado a Node.js 22 LTS
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: 'npm'
 
+      # 3. Instala las dependencias del proyecto de forma tolerante
       - name: Instalar dependencias
-        run: npm ci
+        run: npm install
 
+      # 4. Compila el proyecto Astro 5 generando la carpeta /dist
       - name: Compilar proyecto Astro
         run: npm run build
 
+      # 5. Prepara y sube la carpeta compilada para GitHub Pages
       - name: Subir artefacto compilado
         uses: actions/upload-pages-artifact@v3
         with:
@@ -45,6 +50,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # 6. Despliega los archivos estáticos en los servidores web
       - name: Publicar en GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
