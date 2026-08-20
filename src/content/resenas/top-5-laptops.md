@@ -10,6 +10,8 @@ Elegir una laptop escolar no es dejarse llevar por la marca de moda, sino entend
 
 ## 1. La Accesible de Batalla: Laptop HP 245 G10 (AMD Ryzen 7 7730U)
 
+![Laptop HP 245 G10](/images/hp-245.webp)
+
 ### Veredicto Técnico:
 Esta laptop rompe el esquema tradicional de los equipos de entrada académicos. Al integrar un procesador AMD Ryzen 7 7730U de 8 núcleos y 16 hilos, ofrece una potencia multihilo soberbia dentro de un chasis accesible y orientado al trabajo diario. Su arquitectura Zen 3+ destaca por una eficiencia energética notable, evitando picos de temperatura excesivos y garantizando que la tarjeta madre trabaje holgada ante multitarea pesada, manejo de hojas de cálculo complejas y decenas de pestañas de investigación simultáneas.
 
@@ -26,6 +28,8 @@ Esta laptop rompe el esquema tradicional de los equipos de entrada académicos. 
 ---
 
 ## 2. La Campeona Calidad/Precio: MacBook Neo (Chip A18 Pro)
+
+![Laptop MacBook Neo](/images/macbook-neo.jpg)
 
 ### Veredicto Técnico:
 Apple revoluciona el segmento académico integrando el silicio A18 Pro en un chasis ultra ligero de apenas 1.2 kg. Al carecer de ventiladores mecánicos (diseño fanless), el sistema es 100% silencioso y no acumula polvo interno sobre la placa. Entrega hasta 16 horas de autonomía real gracias a sus núcleos de alta eficiencia, permitiéndote trabajar toda la jornada sin cargar con la fuente de poder.
@@ -44,6 +48,8 @@ Apple revoluciona el segmento académico integrando el silicio A18 Pro en un cha
 
 ## 3. La de Alto Rendimiento: Acer Aspire 3 A315-44P / A325-42 (AMD Ryzen 7 7730U / 16 GB RAM)
 
+![Laptop Acer Aspire 3](/images/acer-aspire.webp)
+
 ### Veredicto Técnico:
 Si buscas potencia bruta para compilar código, ejecutar bases de datos o gestionar proyectos complejos de ingeniería sin pagar un sobreprecio por chasis de lujo, esta Acer es la respuesta justa. Al combinar la arquitectura de 8 núcleos reales del procesador Ryzen 7 7730U con 16 GB de RAM de fábrica, garantiza que la CPU trabaje en su rango óptimo sin sufrir estrangulamiento térmico (*thermal throttling*) bajo cargas prolongadas de trabajo.
 
@@ -61,6 +67,8 @@ Si buscas potencia bruta para compilar código, ejecutar bases de datos o gestio
 
 ## 4. La Híbrida (Estudio y Gaming): ASUS TUF Gaming A16 (Ryzen 7 / RTX 4050 / 16 GB RAM)
 
+![Laptop ASUS TUF A16](/images/asus-tuf.webp)
+
 ### Veredicto Técnico:
 Esta versión de la ASUS TUF A16 es el equilibrio perfecto entre procesamiento de alta eficiencia y aceleración gráfica moderna. Su combinación de procesador AMD Ryzen 7 con la GPU NVIDIA GeForce RTX 4050 ofrece soporte para codificación por hardware de última generación y DLSS 3, permitiendo renderizar proyectos en 3D, editar video o ejecutar simulaciones pesadas sin forzar el sistema. Su pantalla de 16 pulgadas con formato WUXGA otorga ese espacio vertical extra indispensable para software de diseño o barras de herramientas.
 
@@ -77,6 +85,8 @@ Esta versión de la ASUS TUF A16 es el equilibrio perfecto entre procesamiento d
 ---
 
 ## 5. La Ultraportátil Premium: ASUS Zenbook 14 OLED (UX3405 / UM3402)
+
+![Laptop ASUS Zenbook 14](/images/asus-zenbook.webp)
 
 ### Veredicto Técnico:
 Es la alternativa definitiva para creativos y estudiantes de fotografía, diseño o edición de video que buscan fidelidad de color absoluta sin cargar un equipo pesado. Su panel ASUS Lumina OLED entrega negros puros, cobertura del 100% DCI-P3 y certificación Pantone Validated. Todo montado sobre un chasis monobloque de aluminio ultradelgado con certificación de durabilidad militar que disipa el calor de manera pasiva y eficiente.
